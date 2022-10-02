@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import TimeCSS from './time.module.scss'
 
 const timeLength = {
-    "Hours": 24,
-    "Minutes": 60,
-    "Seconds": 60
+    "Hours": [0,23],
+    "Minutes": [1,60],
+    "Seconds": [1,60]
 }
 
 const Time = (props) => {
-    const length = timeLength[props.type]
+    const minLength = timeLength[props.type][0]
+    const maxLength = timeLength[props.type][1]
     const [time, setTime] = useState(0)
 
     useEffect(() => {
@@ -26,7 +27,7 @@ const Time = (props) => {
             }
         }, 1000);
         return () => clearInterval(interval);
-    }, []);
+    }, [props.type]);
 
     const runCallback = (cb) => {
         return cb();
@@ -37,10 +38,12 @@ const Time = (props) => {
             {
                 runCallback(() => {
                     const row = [];
-                    for (let i = 1; i <= length; i++) {
-                        console.log(time)
-                        row.push(<div className={i === time ? `${TimeCSS.time} ${TimeCSS.active}` : TimeCSS.time} style={{ transform: `translateY(${-100*time}%)` }} key={i} > {i}</div>);
-                    }
+                        time-1>=minLength ? row.push(<div className={TimeCSS.time} key={time-1} > {("0" + (time-1)).slice(-2)}</div>) : row.push(<div className={TimeCSS.time} key={maxLength} > {maxLength}</div>)
+
+                        row.push(<div className={`${TimeCSS.time} ${TimeCSS.active}`} key={time} > {("0" + time).slice(-2)}</div>);
+
+                        time+1<=maxLength ? row.push(<div className={TimeCSS.time} key={time+1} > {("0" + (time+1)).slice(-2)}</div>) : row.push(<div className={TimeCSS.time} key={minLength} > {("0" + minLength).slice(-2)}</div>)
+                        
                     return row;
                 })
             }
