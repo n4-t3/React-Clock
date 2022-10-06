@@ -3,8 +3,8 @@ import TimeCSS from './time.module.scss'
 
 const timeLength = {
     "Hours": [0,23],
-    "Minutes": [1,60],
-    "Seconds": [1,60]
+    "Minutes": [0,59],
+    "Seconds": [0,59]
 }
 
 const Time = (props) => {
