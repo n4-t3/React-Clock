@@ -6,6 +6,7 @@
     align-items: center;
     gap: 1rem;
     cursor: pointer;
+    padding:1vw;
 }
 
 .time{
@@ -18,3 +19,72 @@
 .active{
     color:#D3D3D3;
 }
+
+.slide_in{
+    color:#282828;
+    animation: .5s linear slide-in;
+}
+
+@keyframes slide-in{
+    0%{
+        opacity: 0;
+        transform:translate(0,28vw)
+    }
+    100%{
+        opacity: 1;
+        transform:translate(0,0)
+    }
+    
+}
+
+.slide_before_out{
+    position: absolute;
+    opacity: 0;
+    color:#282828;
+    animation: .5s linear slide-before-out;
+}
+
+@keyframes slide-before-out {
+    0%{
+        opacity: 1;
+        transform:translate(0,0)
+    } 
+    
+    100%{
+        opacity: 0;
+        transform:translate(0,-56vw)
+    }
+}
+
+.slide_out{
+    position: relative;
+    animation: .5s linear slide-out;
+}
+
+@keyframes slide-out{
+    0%{
+        color:#D3D3D3;
+        transform:translate(0,28vw)
+    }
+    100%{
+        color:#282828;
+        transform:translate(0,0)
+    }
+    
+}
+
+.slide {
+    animation: .5s linear slide-active;
+}
+
+@keyframes slide-active{
+    0%{
+        color:#282828;
+        transform:translate(0,28vw)
+    }
+    100%{
+        color:#D3D3D3;
+        transform:translate(0,0)
+    }
+}
+
