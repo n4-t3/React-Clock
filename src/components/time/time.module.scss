@@ -22,7 +22,7 @@
 
 .slide_in{
     color:#282828;
-    animation: .5s linear slide-in;
+    animation: .5s linear slide-in forwards;
 }
 
 @keyframes slide-in{
@@ -41,7 +41,7 @@
     position: absolute;
     opacity: 0;
     color:#282828;
-    animation: .5s linear slide-before-out;
+    animation: .5s linear slide-before-out forwards;
 }
 
 @keyframes slide-before-out {
@@ -58,7 +58,7 @@
 
 .slide_out{
     position: relative;
-    animation: .5s linear slide-out;
+    animation: .5s linear slide-out forwards; 
 }
 
 @keyframes slide-out{
@@ -74,7 +74,7 @@
 }
 
 .slide {
-    animation: .5s linear slide-active;
+    animation: .5s linear slide-active forwards;
 }
 
 @keyframes slide-active{
