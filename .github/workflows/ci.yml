@@ -8,7 +8,7 @@ on:
 
 jobs:
   test_and_deploy:
-    name: Run tests
+    name: Run Tests
     runs-on: 'ubuntu-latest'
     steps:
       - name: checkout code
@@ -22,11 +22,5 @@ jobs:
       - name: run test
         run: npm run test
 
-      - name: test build
+      - name: run build test
         run: npm run build
-
-      - name: Deploy to gh pages
-        run: npm run deploy
-        target_branch: gh-pages
-        build_dir: build
-
