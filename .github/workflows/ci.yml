@@ -12,21 +12,24 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - name: checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: n4-t3/React-Clock
 
       - name: install packages
-        run: npm install
+        run: npm ci
 
       - name: run test
         run: npm run test
+
+      - name: test build
+        run: npm run build
 
   deploy:
     runs-on: 'ubuntu-latest'
     steps:
       - name: checkout code
-        uses: action/checkout@v2
+        uses: action/checkout@v3
         with:
           repository: n4-t3/React-Clock
       
@@ -34,4 +37,7 @@ jobs:
         run: npm install
 
       - name: Deploy to gh pages
-        run: npm run deploy
+        with: 
+          target_branch: gh-pages
+          build_dir: build
+
