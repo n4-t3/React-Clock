@@ -4,9 +4,9 @@ import Time from './components/time/time.component';
 function App() {
   return (
     <div className="App">
-      <Time id='hour' type="Hours"/>
-      <Time id='min' type="Minutes"/>
-      <Time id='sec' type="Seconds"/>
+      <Time type="Hours"/>
+      <Time type="Minutes"/>
+      <Time type="Seconds"/>
     </div>
   );
 }
