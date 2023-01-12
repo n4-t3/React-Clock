@@ -9,7 +9,7 @@ Clock Application with: ***React***
 
 ### How to Locally Run the Project
 
-Install required packages
+Install required packages.
 ```
 npm install
 ```
