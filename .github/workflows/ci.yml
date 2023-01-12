@@ -27,7 +27,6 @@ jobs:
 
       - name: Deploy to gh pages
         run: npm run deploy
-        with: 
-          target_branch: gh-pages
-          build_dir: build
+        target_branch: gh-pages
+        build_dir: build
 
