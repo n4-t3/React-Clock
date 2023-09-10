@@ -42,6 +42,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install packages
+        run: npm install
+
       - name: Build and deploy to GitHub Pages
         run: |
           npm run build
