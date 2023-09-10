@@ -35,8 +35,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
+    needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
 
     steps:
       - name: Checkout code
@@ -59,7 +60,7 @@ jobs:
           publish_dir: ./build
 
   check_merge_and_deploy:
-    needs: merge
+    needs: test, merge
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.ref == 'refs/heads/develop'
 
