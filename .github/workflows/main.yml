@@ -1,0 +1,78 @@
+name: CI -> Merge -> CD
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install packages
+        run: npm install
+
+      - name: Run test
+        run: npm test
+
+  merge:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.ref == 'refs/heads/develop'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Merge PR
+        uses: phillipj/git-merge-on-success@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and deploy to GitHub Pages
+        run: |
+          npm run build
+          echo "n4-t3.github.io/React-Clock" > ./build/CNAME
+        env:
+          CI: false
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+
+  check_merge_and_deploy:
+    needs: merge
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.ref == 'refs/heads/develop'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and deploy to GitHub Pages
+        run: |
+          npm run build
+          echo "n4-t3.github.io/React-Clock" > ./build/CNAME
+        env:
+          CI: false
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
