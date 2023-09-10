@@ -1,20 +1,43 @@
-name: Merge PR on CI Success
+name: Merge and Cleanup PR
 
 on:
-  push:
-    branches: [develop]
   pull_request:
-    branches: [develop]
+    branches:
+      - develop
+    types:
+      - opened
 
 jobs:
-  merge:
-    runs-on: ubuntu-latest
+  steps:
+    - name: Check if PR is mergeable
+      run: |
+        PR_URL="${{ github.event.pull_request.url }}"
+        PR_STATE="${{ github.event.pull_request.state }}"
+        PR_BASE_REF="${{ github.event.pull_request.base.ref }}"
+        if [ "$PR_STATE" != "open" ]; then
+          echo "PR is not open. Skipping..."
+          exit 0
+        fi
+        if [ "$PR_BASE_REF" != "develop" ]; then
+          echo "PR is not targeting the 'develop' branch. Skipping..."
+          exit 0
+        fi
+        if [ "$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" -X GET "$PR_URL/merge" | jq -r '.merged')" == "true" ]; then
+          echo "PR is already merged. Skipping..."
+          exit 0
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Merge PR on CI Success
-        uses: phillipj/git-merge-on-success@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Merge PR into Develop
+      run: |
+        PR_HEAD_REF="${{ github.event.pull_request.head.ref }}"
+        PR_BASE_REF="${{ github.event.pull_request.base.ref }}"
+        git fetch origin "+refs/pull/${{ github.event.pull_request.number }}/merge:"
+        git checkout "$PR_BASE_REF"
+        git merge FETCH_HEAD --no-ff --no-edit
+        git push origin ":${PR_HEAD_REF}"
+        git branch -d "$PR_HEAD_REF"
+        echo "PR merged into 'develop' branch, branch deleted."
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
