@@ -6,7 +6,6 @@ function App() {
     <div className="App">
       <Time type="Hours" />
       <Time type="Minutes" />
-      <Time type="Seconds" />
     </div>
   );
 }
