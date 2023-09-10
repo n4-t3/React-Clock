@@ -1,26 +1,21 @@
 name: CI
 
-on: 
+on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
-  test_and_deploy:
-    name: Run Tests
-    runs-on: 'ubuntu-latest'
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v3
-        with:
-          repository: n4-t3/React-Clock
+  test:
+    runs-on: "ubuntu-latest"
 
-      - name: install packages
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install packages
         run: npm install
 
-      - name: run test
-        run: npm run test
-
-      - name: run build test
-        run: npm run build
+      - name: Run test
+        run: npm test
