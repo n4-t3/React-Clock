@@ -23,7 +23,7 @@ jobs:
   merge_and_deploy:
     needs: [test]
     runs-on: ubuntu-latest
-    if: (github.event_name == 'pull_request' && github.ref == 'refs/heads/develop') || (github.event_name == 'push' && github.ref == 'refs/heads/develop')
+    if: (github.event_name == 'pull_request' && github.ref != 'refs/heads/main') || (github.event_name == 'push' && github.ref == 'refs/heads/develop')
 
     steps:
       - name: Checkout code
