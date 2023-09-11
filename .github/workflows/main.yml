@@ -33,14 +33,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Check if it's a pull request or a direct push to develop
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            PR_REF="${GITHUB_REF/refs\/pull\/${{ github.event.pull_request.number }}\/merge/refs/heads}"
-            if [[ "$PR_REF" == "refs/heads/develop" ]] ; then
-              # Automatically merge the PR
-              gh pr merge ${{ github.event.pull_request.number }} --auto --delete-branch
-            fi
-          fi
+          gh pr merge ${{ github.event.pull_request.number }} --auto --delete-branch
 
       - name: Deploy with gh-pages
         env:
