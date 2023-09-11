@@ -35,8 +35,10 @@ jobs:
         run: |
           # Check if it's a pull request or a direct push to develop
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            # Automatically merge the PR
-            gh pr merge ${{ github.event.number }} --auto --delete-branch
+            if [ "${{ github.ref }}" == "refs/heads/develop" ] ; then
+              # Automatically merge the PR
+              gh pr merge ${{ github.event.number }} --auto --delete-branch
+            fi
           fi
 
       - name: Deploy with gh-pages
