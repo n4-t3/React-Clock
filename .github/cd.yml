@@ -1,0 +1,64 @@
+name: CD
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' # Check if it's a direct push to develop
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install packages
+        run: npm install
+
+      - name: Build and deploy to GitHub Pages
+        run: |
+          npm run build
+          echo "n4-t3.github.io/React-Clock" > ./build/CNAME
+        env:
+          CI: false
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+
+  merge:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' # Check if it's a pull request
+
+    steps:
+      - name: Merge PR
+        run: |
+          # Merge PR logic here
+
+  check_merge_and_deploy:
+    needs: merge
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and deploy to GitHub Pages
+        run: |
+          npm run build
+          echo "n4-t3.github.io/React-Clock" > ./build/CNAME
+        env:
+          CI: false
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
