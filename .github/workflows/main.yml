@@ -34,7 +34,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            gh pr merge ${{ github.event.pull_request.number }} --auto --squash --delete-branch ${{ github.ref }}
+            gh pr merge ${{ github.event.pull_request.number }} --auto --squash --delete-branch
           fi
 
       - name: Deploy with gh-pages
