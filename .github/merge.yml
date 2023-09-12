@@ -1,0 +1,21 @@
+name: Merge PR
+
+on:
+  pull_request:
+    branches:
+      - develop
+    types:
+      - opened
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Merge PR
+        uses: phillipj/git-merge-on-success@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
